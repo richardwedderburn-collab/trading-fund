@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FundFlow | Strategy Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="auth.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <nav class="page-nav" aria-label="Primary navigation">
+        <a class="page-link" href="index.html">Dashboard</a>
+        <a class="page-link" href="positions.html">Broker Positions</a>
+        <a class="page-link active" href="strategy.html">Strategy Lab</a>
+        <a class="page-link" href="backtest.html">Backtest Reports</a>
+      </nav>
+
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Strategy workspace</p>
+          <h1>Refine assumptions and tune execution logic with confidence.</h1>
+          <p class="hero-text">
+            Review gating assumptions, vote thresholds, and risk controls before rolling updates to
+            live strategy flow.
+          </p>
+          <div class="hero-actions">
+            <a class="text-link" href="index.html">Open dashboard</a>
+            <a class="text-link" href="backtest.html">Open backtest report</a>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-top">
+            <div>
+              <p class="muted-label">Current model profile</p>
+              <h2>Consensus Engine v2</h2>
+            </div>
+            <span class="chip">Stable</span>
+          </div>
+          <ul class="insight-list">
+            <li><strong>Crypto gate</strong><span>Liquidity + wallet quality + recency</span></li>
+            <li><strong>Stock gate</strong><span>Volume floor with sensitivity tuning</span></li>
+            <li><strong>Polymarket gate</strong><span>On-chain ledger metrics required</span></li>
+            <li><strong>Execution split</strong><span>Full/Half/Abort via configurable thresholds</span></li>
+          </ul>
+        </div>
+      </header>
+
+      <section class="portfolio-grid">
+        <article class="card large-card">
+          <div class="card-header">
+            <div>
+              <p class="eyebrow">Decision quality</p>
+              <h2>Model assumptions</h2>
+            </div>
+          </div>
+          <ul class="insight-list">
+            <li><strong>Reject unknown markets</strong><span>Avoids unsupported execution paths</span></li>
+            <li><strong>Gate-first approach</strong><span>Filters bad signals before expensive processing</span></li>
+            <li><strong>Consensus weighting</strong><span>Vote score maps directly to risk-adjusted sizing</span></li>
+            <li><strong>Live monitor alignment</strong><span>Ledger and backtest metrics share evaluation fields</span></li>
+          </ul>
+        </article>
+
+        <article class="card breakdown-card">
+          <div class="card-header">
+            <div>
+              <p class="eyebrow">Next actions</p>
+              <h2>Roadmap queue</h2>
+            </div>
+          </div>
+          <ul class="insight-list">
+            <li><strong>Benchmark mode</strong><span>Compare signals against passive baseline</span></li>
+            <li><strong>Slippage model</strong><span>Add spread/impact costs to trade PnL</span></li>
+            <li><strong>Warning severity</strong><span>Classify overfit risk as low/medium/high</span></li>
+          </ul>
+        </article>
+      </section>
+    </div>
+  </body>
+</html>

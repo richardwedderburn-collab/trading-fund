@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "trading-fund"
+version = "0.1.0"
+description = "Multi-agent trading fund blueprint with consensus engine and DevOps scaffolding"
+requires-python = ">=3.10"
+dependencies = [
+	"openpyxl>=3.1.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

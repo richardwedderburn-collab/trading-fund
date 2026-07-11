@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FundFlow | Trading Command Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="auth.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="brand-banner" aria-label="FundFlow brand banner">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="presentation" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="logoGradient" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#4cc9f0"></stop>
+                <stop offset="100%" stop-color="#2dd4bf"></stop>
+              </linearGradient>
+            </defs>
+            <rect x="6" y="6" width="52" height="52" rx="14" fill="url(#logoGradient)"></rect>
+            <polyline points="14,40 23,31 30,35 40,24 50,28" fill="none" stroke="#07111f" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+            <circle cx="50" cy="28" r="3" fill="#07111f"></circle>
+          </svg>
+        </div>
+        <div class="brand-copy">
+          <p class="brand-overline">Secure Wealth Operations</p>
+          <h1>FundFlow</h1>
+          <p>Institutional-style command center for portfolio execution and risk controls.</p>
+        </div>
+        <div class="brand-graphic" aria-hidden="true">
+          <svg viewBox="0 0 320 88" role="presentation" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="bannerLine" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#4cc9f0"></stop>
+                <stop offset="100%" stop-color="#7b61ff"></stop>
+              </linearGradient>
+            </defs>
+            <polyline points="0,66 34,58 66,62 92,46 124,51 154,36 188,43 220,29 252,38 286,24 320,30" fill="none" stroke="url(#bannerLine)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline>
+            <g fill="#7dd3fc" fill-opacity="0.3">
+              <rect x="20" y="48" width="6" height="28" rx="2"></rect>
+              <rect x="84" y="40" width="6" height="22" rx="2"></rect>
+              <rect x="146" y="30" width="6" height="26" rx="2"></rect>
+              <rect x="210" y="23" width="6" height="24" rx="2"></rect>
+              <rect x="272" y="18" width="6" height="20" rx="2"></rect>
+            </g>
+          </svg>
+        </div>
+      </header>
+
+      <nav class="page-nav" aria-label="Primary navigation">
+        <a class="page-link active" href="index.html">Dashboard</a>
+        <a class="page-link" href="positions.html" data-requires-auth="true">Broker Positions</a>
+        <a class="page-link" href="strategy.html" data-requires-auth="true">Strategy Lab</a>
+        <a class="page-link" href="backtest.html" data-requires-auth="true">Backtest Reports</a>
+      </nav>
+
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Unified investor workspace</p>
+          <h1>Track every wallet, exchange, and trade in one calm command center.</h1>
+          <p class="hero-text">
+            Open an account, connect your crypto wallets and brokerage tools, and monitor
+            deposits, withdrawals, and live activity with clarity.
+          </p>
+          <div class="hero-actions">
+            <button id="scrollToSetup" class="primary-btn">Start your workspace</button>
+            <a class="text-link" href="positions.html" data-requires-auth="true">Open broker positions</a>
+            <a class="text-link" href="strategy.html" data-requires-auth="true">Open strategy lab</a>
+            <a class="text-link" href="#features">Explore features</a>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div class="hero-card-top">
+            <div>
+              <p class="muted-label">Portfolio balance</p>
+              <h2 id="hero-balance">$124,580</h2>
+            </div>
+            <span class="chip positive">+8.4%</span>
+          </div>
+          <div class="line-chart-shell line-chart-hero" id="hero-chart" aria-label="Portfolio balance trend"></div>
+          <div class="hero-card-footer">
+            <div>
+              <p class="muted-label">Inflow</p>
+              <strong id="hero-inflow">$16,240</strong>
+            </div>
+            <div>
+              <p class="muted-label">Outflow</p>
+              <strong id="hero-outflow">$5,840</strong>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main id="workspace">
+        <section class="tab-nav" aria-label="Workspace sections">
+          <button class="tab-btn active" data-tab="account">Account & Login</button>
+          <button class="tab-btn" data-tab="connections" data-requires-auth="true">Connections</button>
+          <button class="tab-btn" data-tab="portfolio" data-requires-auth="true">Portfolio</button>
+          <button class="tab-btn" data-tab="strategy" data-requires-auth="true">Strategy</button>
+          <button class="tab-btn" data-tab="backtesting" data-requires-auth="true">Backtesting</button>
+          <button class="tab-btn" data-tab="activity" data-requires-auth="true">Activity</button>
+          <button class="tab-btn" data-tab="insights" data-requires-auth="true">Insights</button>
+        </section>
+
+        <section id="account" class="tab-panel active">
+          <div class="locked-mode-notice" role="status" aria-live="polite">
+            <strong>Locked Mode Active</strong>
+            <span>Sign in to unlock dashboard analytics, broker actions, and strategy controls.</span>
+          </div>
+          <div class="access-stage">
+            <div class="access-market-layer" aria-hidden="true">
+              <svg viewBox="0 0 1200 300" preserveAspectRatio="none" role="presentation">
+                <defs>
+                  <linearGradient id="marketGlow" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#0ea5e9" stop-opacity="0.15"></stop>
+                    <stop offset="100%" stop-color="#14b8a6" stop-opacity="0.28"></stop>
+                  </linearGradient>
+                  <linearGradient id="marketLine" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#4cc9f0"></stop>
+                    <stop offset="100%" stop-color="#2dd4bf"></stop>
+                  </linearGradient>
+                </defs>
+                <path d="M 0 220 C 180 140, 320 260, 480 180 C 640 100, 760 230, 920 150 C 1030 95, 1110 175, 1200 120 L 1200 300 L 0 300 Z" fill="url(#marketGlow)"></path>
+                <polyline points="0,220 120,188 220,206 320,170 420,186 520,132 630,156 730,116 840,146 930,102 1030,130 1120,108 1200,84" fill="none" stroke="url(#marketLine)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <g fill="#7dd3fc" fill-opacity="0.33">
+                  <rect x="95" y="150" width="10" height="72" rx="2"></rect>
+                  <rect x="208" y="162" width="10" height="44" rx="2"></rect>
+                  <rect x="384" y="132" width="10" height="74" rx="2"></rect>
+                  <rect x="592" y="120" width="10" height="96" rx="2"></rect>
+                  <rect x="778" y="138" width="10" height="66" rx="2"></rect>
+                  <rect x="978" y="112" width="10" height="84" rx="2"></rect>
+                </g>
+              </svg>
+            </div>
+
+            <div class="workspace-grid access-grid">
+              <article class="card setup-card access-card">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">Onboarding</p>
+                  <h2>Create an account</h2>
+                </div>
+              </div>
+              <form id="account-form" class="stack-form">
+                <label>
+                  Full name
+                  <input id="fullName" name="fullName" type="text" placeholder="Alex Morgan" required />
+                </label>
+                <label>
+                  Email
+                  <input id="email" name="email" type="email" placeholder="alex@fundflow.io" required />
+                </label>
+                <label>
+                  Password
+                  <input id="password" name="password" type="password" placeholder="••••••••" required />
+                </label>
+                <button class="primary-btn" type="submit">Open account</button>
+              </form>
+              <p id="account-status" class="status-pill">Ready for onboarding</p>
+              <p id="llm-status" class="status-pill">Checking LLM provider…</p>
+              </article>
+
+              <article class="card setup-card access-card">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">Access</p>
+                  <h2>Login</h2>
+                </div>
+              </div>
+              <form id="login-form" class="stack-form">
+                <label>
+                  Email
+                  <input id="loginEmail" type="email" placeholder="alex@fundflow.io" required />
+                </label>
+                <label>
+                  Password
+                  <input id="loginPassword" type="password" placeholder="••••••••" required />
+                </label>
+                <button class="secondary-btn" type="submit">Sign in</button>
+              </form>
+              <p id="login-status" class="status-pill">Sign in to unlock trading functions</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section id="connections" class="tab-panel">
+          <article class="card connect-card">
+            <div class="card-header">
+              <div>
+                <p class="eyebrow">Connections</p>
+                <h2>Connect your tools</h2>
+              </div>
+            </div>
+            <div class="button-stack">
+              <button class="secondary-btn" data-connection="alpaca" data-requires-auth="true">Connect Alpaca</button>
+              <button class="secondary-btn" data-connection="crypto" data-requires-auth="true">Connect Crypto.com</button>
+              <button class="secondary-btn" data-connection="wallet" data-requires-auth="true">Connect crypto wallet</button>
+            </div>
+            <ul class="connection-list">
+              <li>
+                Alpaca
+                <span id="alpaca-state" class="state disconnected">Disconnected</span>
+              </li>
+              <li>
+                Crypto.com
+                <span id="crypto-state" class="state disconnected">Disconnected</span>
+              </li>
+              <li>
+                Wallet
+                <span id="wallet-state" class="state disconnected">Disconnected</span>
+              </li>
+            </ul>
+            <div class="connection-diagnostics">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">Exchange network status</p>
+                  <h2>Whitelist readiness</h2>
+                </div>
+                <button id="refresh-network-status" class="secondary-btn" data-requires-auth="true" type="button">Refresh network</button>
+              </div>
+              <ul class="connection-list compact-list">
+                <li>
+                  Egress IPv4
+                  <span id="egress-ipv4" class="state">Unknown</span>
+                </li>
+                <li>
+                  Egress IPv6
+                  <span id="egress-ipv6" class="state">Unknown</span>
+                </li>
+                <li>
+                  Whitelist entries
+                  <span id="egress-whitelist" class="state">None</span>
+                </li>
+              </ul>
+              <p id="egress-warning" class="status-pill">No network diagnostics loaded yet.</p>
+              <p class="eyebrow balance-eyebrow">Crypto.com balances</p>
+              <ul id="crypto-balances-list" class="connection-list compact-list">
+                <li>
+                  Balances
+                  <span class="state">Connect Crypto.com to load</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="connection-diagnostics">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">Automation</p>
+                  <h2>Portfolio auto-trade control</h2>
+                </div>
+              </div>
+              <div class="button-stack">
+                <button id="autotrade-toggle-btn" class="secondary-btn" type="button" data-requires-auth="true">Enable auto trade</button>
+                <button id="autotrade-run-once-btn" class="secondary-btn" type="button" data-requires-auth="true">Run Alpaca test cycle</button>
+                <button id="autotrade-run-live-once-btn" class="secondary-btn" type="button" data-requires-auth="true">Run live once (confirm)</button>
+                <button id="autotrade-refresh-btn" class="secondary-btn" type="button" data-requires-auth="true">Refresh auto-trade status</button>
+              </div>
+              <div class="strategy-control-grid">
+                <label>
+                  Mode
+                  <select id="autotrade-mode">
+                    <option value="dry_run">Dry run</option>
+                    <option value="live">Live execute</option>
+                  </select>
+                </label>
+                <label>
+                  Interval seconds
+                  <input id="autotrade-interval" type="number" min="30" step="30" value="300" />
+                </label>
+                <label>
+                  Symbols
+                  <input id="autotrade-symbols" type="text" value="AAPL,MSFT,NVDA,TSLA,AMD,AMZN,META,GOOGL" />
+                </label>
+                <label>
+                  Operator name
+                  <input id="autotrade-operator-name" type="text" value="dashboard-user" />
+                </label>
+                <label>
+                  Operator role
+                  <select id="autotrade-operator-role">
+                    <option value="trader">Trader</option>
+                    <option value="analyst">Analyst</option>
+                    <option value="admin">Admin</option>
+                    <option value="owner">Owner</option>
+                  </select>
+                </label>
+              </div>
+              <div class="button-stack">
+                <button id="autotrade-save-btn" class="secondary-btn" type="button" data-requires-auth="true">Save auto-trade settings</button>
+                <button id="autotrade-save-operator-btn" class="secondary-btn" type="button" data-requires-auth="true">Save operator profile</button>
+              </div>
+              <p id="autotrade-status" class="status-pill">Auto-trade status not loaded yet.</p>
+              <ul class="connection-list compact-list">
+                <li>
+                  Enabled
+                  <span id="autotrade-enabled" class="state">--</span>
+                </li>
+                <li>
+                  Last run
+                  <span id="autotrade-last-run" class="state">--</span>
+                </li>
+                <li>
+                  Last mode
+                  <span id="autotrade-last-mode" class="state">--</span>
+                </li>
+                <li>
+                  Last selected orders
+                  <span id="autotrade-last-selected" class="state">--</span>
+                </li>
+              </ul>
+              <p class="eyebrow balance-eyebrow">Last cycle order details</p>
+              <ul id="autotrade-last-orders-list" class="connection-list compact-list">
+                <li>
+                  Orders
+                  <span class="state">No cycle details yet</span>
+                </li>
+              </ul>
+            </div>
+          </article>
+        </section>
+
+        <section id="portfolio" class="tab-panel">
+          <div class="portfolio-grid">
+            <article class="card large-card">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">Performance</p>
+                  <h2>Portfolio pulse</h2>
+                </div>
+                <span class="chip">Live preview</span>
+              </div>
+              <div class="stats-grid">
+                <div class="stat-card">
+                  <p>Balance</p>
+                  <strong id="balance-card">$124,580</strong>
+                </div>
+                <div class="stat-card">
+                  <p>Open positions</p>
+                  <strong id="positions-card">7</strong>
+                </div>
+                <div class="stat-card">
+                  <p>Risk score</p>
+                  <strong id="risk-card">24%</strong>
+                </div>
+              </div>
+              <div class="line-chart-shell line-chart-activity" id="activity-chart" aria-label="Activity trend"></div>
+            </article>
+
+            <article class="card breakdown-card">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">Allocation</p>
+                  <h2>Portfolio mix</h2>
+                </div>
+                <span class="chip">Auto-balanced</span>
+              </div>
+              <ul id="holdings-list" class="holdings-list"></ul>
+            </article>
+
+            <article class="card large-card insights-card">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">Risk and income</p>
+                  <h2>Portfolio drivers</h2>
+                </div>
+              </div>
+              <div class="insights-grid">
+                <div class="stat-card">
+                  <p>Sharpe proxy</p>
+                  <strong id="sharpe-card">1.42</strong>
+                </div>
+                <div class="stat-card">
+                  <p>Expected monthly yield</p>
+                  <strong id="yield-card">$1,120</strong>
+                </div>
+                <div class="stat-card">
+                  <p>Hedge coverage</p>
+                  <strong id="hedge-card">68%</strong>
+                </div>
+                <div class="stat-card">
+                  <p>Stablecoin buffer</p>
+                  <strong id="buffer-card">22%</strong>
+                </div>
+              </div>
+            </article>
+
+            <article class="card large-card insights-card">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">Live Holdings</p>
+                  <h2>Crypto.com balances and open positions</h2>
+                </div>
+              </div>
+              <div class="stats-grid">
+                <div class="stat-card">
+                  <p>Crypto assets tracked</p>
+                  <strong id="portfolio-crypto-asset-count">--</strong>
+                </div>
+                <div class="stat-card">
+                  <p>Crypto fiat estimate</p>
+                  <strong id="portfolio-crypto-estimate-usd">--</strong>
+                </div>
+                <div class="stat-card">
+                  <p>Equity positions gross</p>
+                  <strong id="portfolio-equity-gross-usd">--</strong>
+                </div>
+              </div>
+              <div class="line-chart-shell line-chart-activity" id="portfolio-allocation-chart" aria-label="Crypto versus equities allocation"></div>
+              <p id="portfolio-allocation-note" class="muted-label">Allocation estimate updates from latest balances and positions snapshots.</p>
+              <div class="portfolio-grid">
+                <div>
+                  <p class="muted-label">Crypto.com balances</p>
+                  <ul id="portfolio-crypto-balances" class="insight-list compact-list">
+                    <li><strong>Balances</strong><span>Waiting for Crypto.com snapshot.</span></li>
+                  </ul>
+                </div>
+                <div>
+                  <p class="muted-label">Open positions</p>
+                  <ul id="portfolio-open-positions" class="insight-list compact-list">
+                    <li><strong>Positions</strong><span>Waiting for broker position snapshot.</span></li>
+                  </ul>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section id="strategy" class="tab-panel">
+          <div class="portfolio-grid">
+            <article class="card large-card">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">Strategy assumptions</p>
+                  <h2>Decision model gates</h2>
+                </div>
+                <span class="chip">Model v2</span>
+              </div>
+              <ul id="strategy-assumptions" class="insight-list"></ul>
+            </article>
+
+            <article class="card breakdown-card">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">Execution profile</p>
+                  <h2>Consensus policy</h2>
+                </div>
+                <span class="chip">Adaptive</span>
+              </div>
+              <ul id="consensus-policy" class="insight-list"></ul>
+            </article>
+          </div>
+
+          <div class="portfolio-grid strategy-preview-grid">
+            <article class="card large-card">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">Execution preview</p>
+                  <h2>Exposure-aware dry run</h2>
+                </div>
+                <span id="execution-preview-chip" class="chip">Idle</span>
+              </div>
+              <div class="strategy-control-grid">
+                <label>
+                  Symbols
+                  <input id="preview-symbols" type="text" value="AAPL,MSFT,NVDA,TSLA,AMD,AMZN,META,GOOGL" />
+                </label>
+                <label>
+                  Risk budget %
+                  <input id="preview-risk-pct" type="number" min="0.01" max="1" step="0.01" value="0.05" />
+                </label>
+                <label>
+                  Corr soft limit
+                  <input id="preview-corr-soft" type="number" min="0" max="0.99" step="0.01" value="0.75" />
+                </label>
+                <label>
+                  Corr hard limit
+                  <input id="preview-corr-hard" type="number" min="0" max="0.999" step="0.01" value="0.90" />
+                </label>
+                <label>
+                  Soft size multiplier
+                  <input id="preview-soft-multiplier" type="number" min="0.1" max="1" step="0.05" value="0.50" />
+                </label>
+                <label>
+                  Sector soft limit
+                  <input id="preview-sector-soft" type="number" min="0" max="1" step="0.05" value="1.00" />
+                </label>
+                <label>
+                  Factor soft limit
+                  <input id="preview-factor-soft" type="number" min="0" max="1" step="0.05" value="1.00" />
+                </label>
+                <label>
+                  Group soft multiplier
+                  <input id="preview-group-multiplier" type="number" min="0.1" max="1" step="0.05" value="0.65" />
+                </label>
+              </div>
+              <div class="hero-actions strategy-actions-row">
+                <button id="run-execution-preview" class="primary-btn" type="button" data-requires-auth="true">Run dry run</button>
+                <p id="execution-preview-note" class="hero-text compact-note">Preview how correlation controls and consensus sizing affect candidate selection.</p>
+              </div>
+              <div class="metric-strip execution-strip">
+                <div>
+                  <p class="muted-label">Candidate count</p>
+                  <h3 id="preview-candidate-count">--</h3>
+                </div>
+                <div>
+                  <p class="muted-label">Selected orders</p>
+                  <h3 id="preview-selected-count">--</h3>
+                </div>
+                <div>
+                  <p class="muted-label">Spent budget</p>
+                  <h3 id="preview-spent-usd">--</h3>
+                </div>
+                <div>
+                  <p class="muted-label">Skipped by exposure</p>
+                  <h3 id="preview-skipped-count">--</h3>
+                </div>
+              </div>
+            </article>
+
+            <article class="card breakdown-card">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">Rationale</p>
+                  <h2>Selection and exposure decisions</h2>
+                </div>
+              </div>
+              <ul id="selected-orders-list" class="insight-list compact-list">
+                <li><strong>Waiting</strong><span>Run a dry run preview to inspect selected orders.</span></li>
+              </ul>
+              <ul id="exposure-adjustments-list" class="insight-list compact-list">
+                <li><strong>Exposure controls</strong><span>No exposure adjustments loaded yet.</span></li>
+              </ul>
+              <ul id="group-exposure-list" class="insight-list compact-list">
+                <li><strong>Group controls</strong><span>No sector/factor group adjustments loaded yet.</span></li>
+              </ul>
+              <ul id="sector-exposure-list" class="insight-list compact-list">
+                <li><strong>Sector exposure</strong><span>No exposure snapshot loaded yet.</span></li>
+              </ul>
+              <ul id="factor-exposure-list" class="insight-list compact-list">
+                <li><strong>Factor exposure</strong><span>No exposure snapshot loaded yet.</span></li>
+              </ul>
+            </article>
+
+            <article class="card large-card">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">Per symbol compare</p>
+                  <h2>Trend-following vs mean-reversion</h2>
+                </div>
+              </div>
+              <ul id="pack-comparison-list" class="insight-list compact-list">
+                <li><strong>Waiting</strong><span>Run a dry run preview to compare pack decisions per symbol.</span></li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section id="backtesting" class="tab-panel">
+          <article class="card large-card">
+            <div class="card-header">
+              <div>
+                <p class="eyebrow">Evaluation</p>
+                <h2>Backtest and walk-forward lens</h2>
+              </div>
+              <span class="chip">Out-of-sample ready</span>
+            </div>
+            <div class="insights-grid">
+              <div class="stat-card">
+                <p>In-sample PnL</p>
+                <strong id="is-pnl">$1,823.09</strong>
+              </div>
+              <div class="stat-card">
+                <p>Walk-forward PnL</p>
+                <strong id="oos-pnl">$1,166.57</strong>
+              </div>
+              <div class="stat-card">
+                <p>OOS/IS ratio</p>
+                <strong id="oos-ratio">0.640</strong>
+              </div>
+              <div class="stat-card">
+                <p>Degradation flag</p>
+                <strong id="degradation-flag">Warning</strong>
+              </div>
+            </div>
+            <ul id="walkforward-folds" class="insight-list fold-list"></ul>
+          </article>
+        </section>
+
+        <section id="activity" class="tab-panel">
+          <article class="card activity-card">
+            <div class="card-header">
+              <div>
+                <p class="eyebrow">Activity feed</p>
+                <h2>Recent movement</h2>
+              </div>
+            </div>
+            <ul id="activity-feed" class="activity-feed"></ul>
+          </article>
+        </section>
+
+        <section id="insights" class="tab-panel">
+          <section id="features" class="feature-grid">
+            <article class="feature-card">
+              <h3>Smart onboarding</h3>
+              <p>Create a profile, set your preferences, and tailor your watchlist in minutes.</p>
+            </article>
+            <article class="feature-card">
+              <h3>Wallet and exchange sync</h3>
+              <p>See balances and recent transfers from your crypto and brokerage connections.</p>
+            </article>
+            <article class="feature-card">
+              <h3>Trade insights</h3>
+              <p>Monitor inflows, outflows, open positions, and risk at a glance.</p>
+            </article>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

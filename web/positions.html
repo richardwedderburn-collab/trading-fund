@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FundFlow | Broker Positions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="auth.js"></script>
+    <link rel="stylesheet" href="positions.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <div>
+          <p id="broker-environment-label" class="eyebrow">Broker environment</p>
+          <h1>Active positions</h1>
+          <p id="broker-environment-subtext" class="subtext">A separate workspace for monitoring all open trades and balances from your connected broker.</p>
+        </div>
+        <div class="topbar-actions">
+          <span id="live-update-status" class="panel-badge neutral-pill">Live updates every 2s</span>
+          <span id="positions-last-updated" class="position-meta">Waiting for first update...</span>
+          <a class="ghost-link" href="index.html">Back to overview</a>
+          <button id="refresh-btn" class="primary-btn">Refresh data</button>
+        </div>
+      </header>
+
+      <section class="summary-grid">
+        <article class="summary-card accent-card">
+          <p class="muted">Total equity</p>
+          <h2 id="equity-card">$128,940</h2>
+          <span id="equity-status" class="positive-pill">Auto-updating</span>
+        </article>
+        <article class="summary-card">
+          <p class="muted">Open positions</p>
+          <h2 id="open-positions-card">7</h2>
+        </article>
+        <article class="summary-card">
+          <p class="muted">Buying power</p>
+          <h2 id="buying-power-card">$21,400</h2>
+        </article>
+      </section>
+
+      <section class="positions-panel">
+        <div class="panel-header">
+          <h3>Broker positions</h3>
+          <span id="broker-account-badge" class="panel-badge">Loading account...</span>
+        </div>
+        <p id="broker-account-meta" class="position-meta">Fetching account metadata.</p>
+        <div id="positions-list" class="positions-list"></div>
+      </section>
+
+      <section class="positions-panel ledger-panel">
+        <div class="panel-header">
+          <h3>Polymarket on-chain monitor</h3>
+          <span id="ledger-status" class="panel-badge neutral-pill">Loading...</span>
+        </div>
+        <p id="ledger-meta" class="position-meta">Waiting for ledger snapshot.</p>
+        <div class="ledger-grid">
+          <article class="ledger-card">
+            <p class="muted">Transfer transactions</p>
+            <h2 id="ledger-tx-count">--</h2>
+          </article>
+          <article class="ledger-card">
+            <p class="muted">Unique wallets</p>
+            <h2 id="ledger-wallets">--</h2>
+          </article>
+          <article class="ledger-card">
+            <p class="muted">Estimated USD volume</p>
+            <h2 id="ledger-volume">--</h2>
+          </article>
+          <article class="ledger-card">
+            <p class="muted">Block range</p>
+            <h2 id="ledger-block-range">--</h2>
+          </article>
+        </div>
+      </section>
+    </div>
+
+    <script src="positions.js"></script>
+  </body>
+</html>

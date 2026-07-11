@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trading-fund-consensus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trading-fund-consensus
+  template:
+    metadata:
+      labels:
+        app: trading-fund-consensus
+    spec:
+      containers:
+        - name: consensus
+          image: trading-fund-consensus:latest
+          env:
+            - name: REDIS_URL
+              value: redis://redis:6379/0
+            - name: VAULT_ADDR
+              value: http://vault:8200

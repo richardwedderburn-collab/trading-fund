@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FundFlow | Backtest Reports</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+          <h1>Inspect strategy-pack behavior, drift risk, and walk-forward durability before deployment.</h1>
+    <script src="auth.js"></script>
+            The backend now tracks trend and mean-reversion pack selection, volatility-aware sizing,
+            rolling drift windows, and live exportable diagnostics. This view turns those raw datasets
+            into operator-ready decision panels.
+  <body>
+    <div class="page-shell">
+      <nav class="page-nav" aria-label="Primary navigation">
+        <a class="page-link" href="index.html">Dashboard</a>
+        <a class="page-link" href="positions.html">Broker Positions</a>
+        <a class="page-link" href="strategy.html">Strategy Lab</a>
+        <div class="hero-card insight-hero-card">
+      </nav>
+
+              <p class="muted-label">Latest run status</p>
+              <h2 id="hero-run-title">Loading backtest summary...</h2>
+          <p class="eyebrow">Evaluation workspace</p>
+            <span id="hero-run-chip" class="chip">Syncing</span>
+          <p class="hero-text">
+          <ul id="hero-insight-list" class="insight-list">
+            <li><strong>In-sample PnL</strong><span>--</span></li>
+            <li><strong>Walk-forward PnL</strong><span>--</span></li>
+            <li><strong>OOS/IS ratio</strong><span>--</span></li>
+            <li><strong>Degradation warning</strong><span>--</span></li>
+            <a class="text-link" href="strategy.html">Open strategy lab</a>
+          <p id="hero-run-note" class="hero-text compact-note">Waiting for summary and drift datasets.</p>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-top">
+            <div>
+              <p class="muted-label">Latest run status</p>
+              <h2>Walk-forward active</h2>
+              <p class="eyebrow">Model health</p>
+              <h2>Walk-forward and drift diagnostics</h2>
+          </div>
+            <div id="drift-chip" class="chip">Pending</div>
+          <ul class="insight-list">
+          <div class="diagnostic-grid">
+            <div class="diagnostic-panel">
+              <p class="muted-label">Walk-forward windows</p>
+              <ul id="fold-list" class="insight-list fold-list">
+                <li><strong>Waiting</strong><span>No fold data loaded yet</span></li>
+              </ul>
+            </div>
+            <div class="diagnostic-panel">
+              <p class="muted-label">Rolling drift monitor</p>
+              <div class="line-chart-shell line-chart-activity" id="drift-chart" aria-label="Rolling drift performance chart"></div>
+              <ul id="drift-window-list" class="insight-list compact-list drift-list">
+                <li><strong>Waiting</strong><span>No drift windows loaded yet</span></li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="card breakdown-card">
+          <div class="card-header">
+            <div>
+              <p class="eyebrow">Strategy packs</p>
+              <h2>Pack usage and sizing behavior</h2>
+            </div>
+            <div id="pack-status-chip" class="chip">Pending</div>
+          </div>
+          <div class="metric-stack">
+            <div class="metric-strip">
+              <div>
+                <p class="muted-label">Trend-following share</p>
+                <h3 id="trend-pack-share">--</h3>
+              </div>
+              <div>
+                <p class="muted-label">Mean-reversion share</p>
+                <h3 id="reversion-pack-share">--</h3>
+              </div>
+              <div>
+                <p class="muted-label">Average size multiplier</p>
+                <h3 id="avg-size-multiplier">--</h3>
+              </div>
+            </div>
+            <div class="line-chart-shell line-chart-activity" id="pack-chart" aria-label="Strategy pack mix chart"></div>
+            <div id="pack-breakdown-bars" class="bar-stack">
+              <div class="bar-row"><span>Loading strategy pack mix...</span></div>
+            </div>
+            <ul id="regime-breakdown-list" class="insight-list compact-list">
+              <li><strong>Waiting</strong><span>No regime distribution loaded yet</span></li>
+            </ul>
+          </div>
+        </article>
+      </section>
+
+      <section class="portfolio-grid triple-grid">
+        <article class="card snapshot-card">
+          <div class="card-header">
+            <div>
+              <p class="eyebrow">Risk surface</p>
+              <h2>Deployment guardrails</h2>
+            </div>
+          </div>
+          <ul id="risk-snapshot-list" class="insight-list compact-list">
+            <li><strong>Loading</strong><span>Waiting for summary metrics</span></li>
+          </ul>
+        </article>
+
+        <article class="card snapshot-card">
+          <div class="card-header">
+            <div>
+              <p class="eyebrow">Trade fabric</p>
+              <h2>Recent trade diagnostics</h2>
+            </div>
+          </div>
+          <ul id="trade-diagnostic-list" class="insight-list compact-list">
+            <li><strong>Loading</strong><span>Waiting for trade diagnostics</span></li>
+          </ul>
+        </article>
+
+        <article class="card snapshot-card">
+          <div class="card-header">
+            <div>
+              <p class="eyebrow">Exports</p>
+              <h2>Available datasets</h2>
+            </div>
+            <div class="hero-actions strategy-actions-row">
+              <button id="regenerate-datasets-btn" class="secondary-btn" type="button">Regenerate exports</button>
+              <button id="refresh-datasets-btn" class="secondary-btn" type="button">Refresh datasets</button>
+            </div>
+        </div>
+          <ul class="insight-list fold-list">
+            <li><strong>Fold 1</strong><span>54.10% win, $476.19 pnl, gate 250k</span></li>
+            <li><strong>Fold 2</strong><span>51.08% win, $99.18 pnl, gate 250k</span></li>
+            <li><strong>Fold 3</strong><span>51.10% win, $288.00 pnl, gate 250k</span></li>
+            <li><strong>Fold 4</strong><span>52.77% win, $303.19 pnl, gate 250k</span></li>
+          </ul>
+        </article>
+
+        <article class="card breakdown-card">
+          <div class="card-header">
+            <div>
+              <p class="eyebrow">Exports</p>
+              <h2>Available datasets</h2>
+            </div>
+            <button id="refresh-datasets-btn" class="secondary-btn" type="button">Refresh datasets</button>
+          </div>
+          <div id="datasets-status" class="status-pill">Loading available datasets...</div>
+          <div class="dataset-table-wrap">
+            <table class="dataset-table" aria-label="Backtest export datasets">
+              <thead>
+                <tr>
+                  <th>Dataset</th>
+                  <th>Rows</th>
+                  <th>Updated</th>
+                  <th>Downloads</th>
+                </tr>
+              </thead>
+              <tbody id="datasets-table-body">
+                <tr>
+                  <td colspan="4">Loading...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section class="portfolio-grid">
+        <article class="card large-card">
+          <div class="card-header">
+            <div>
+              <p class="eyebrow">Live data layer</p>
+              <h2>Real-time dataset preview and field inspection</h2>
+            </div>
+            <div id="layer-live-status" class="chip">Waiting</div>
+          </div>
+          <div class="layer-controls">
+            <label for="layer-dataset-select">Dataset</label>
+            <select id="layer-dataset-select"></select>
+            <button id="open-layer-btn" class="secondary-btn" type="button">Open layer</button>
+          </div>
+          <p id="layer-meta" class="hero-text">Select a dataset to open the preview layer.</p>
+          <div id="layer-highlight-strip" class="metric-strip layer-highlight-strip">
+            <div>
+              <p class="muted-label">Columns</p>
+              <h3 id="layer-column-count">--</h3>
+            </div>
+            <div>
+              <p class="muted-label">Preview rows</p>
+              <h3 id="layer-row-count">--</h3>
+            </div>
+            <div>
+              <p class="muted-label">Last updated</p>
+              <h3 id="layer-last-updated">--</h3>
+            </div>
+          </div>
+          <div class="dataset-table-wrap">
+            <table class="dataset-table" aria-label="Live dataset preview">
+              <thead id="layer-table-head"></thead>
+              <tbody id="layer-table-body">
+                <tr>
+                  <td>Waiting for layer selection...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+    </div>
+    <script src="backtest.js"></script>
+  </body>
+</html>
