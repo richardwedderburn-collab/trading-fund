@@ -27,6 +27,7 @@ from trading_fund.ledger import fetch_polymarket_ledger_snapshot
 from trading_fund.positions import build_position_cards
 from trading_fund.alpaca_execute import execute_alpaca_strategy
 from trading_fund.autotrade_manager import load_state as load_autotrade_state, update_settings as update_autotrade_settings, run_cycle as run_autotrade_cycle, maybe_run_due as maybe_run_autotrade_due
+from trading_fund.crypto_com_fees import fee_schedule_snapshot
 
 WEB_ROOT = ROOT / "web"
 IP_MONITOR_STATE_PATH = ROOT / ".ip_monitor_state.json"
@@ -745,6 +746,24 @@ class Handler(BaseHTTPRequestHandler):
             symbols_raw = params.get("symbols", [""])[0]
             symbols = [item.strip().upper() for item in symbols_raw.split(",") if item.strip()]
             status = _fetch_crypto_com_quotes(values, symbols)
+            body = json.dumps(status).encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+            return
+
+        if parsed.path == "/api/crypto/fees":
+            params = parse_qs(parsed.query)
+            volume_raw = params.get("volume_30d_usd", [""])[0]
+            volume = None
+            if volume_raw:
+                try:
+                    volume = float(volume_raw)
+                except ValueError:
+                    volume = None
+            status = fee_schedule_snapshot(volume)
             body = json.dumps(status).encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
