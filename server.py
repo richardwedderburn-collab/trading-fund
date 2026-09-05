@@ -28,11 +28,13 @@ from trading_fund.positions import build_position_cards
 from trading_fund.alpaca_execute import execute_alpaca_strategy
 from trading_fund.autotrade_manager import load_state as load_autotrade_state, update_settings as update_autotrade_settings, run_cycle as run_autotrade_cycle, maybe_run_due as maybe_run_autotrade_due
 from trading_fund.crypto_com_fees import fee_schedule_snapshot
+from trading_fund.capital_ledger import add_transfer, transfers_snapshot
 
 WEB_ROOT = ROOT / "web"
 IP_MONITOR_STATE_PATH = ROOT / ".ip_monitor_state.json"
 BACKTEST_OUTPUT_DIR = ROOT / "outputs" / "backtest"
 AUTOTRADE_STATE_PATH = ROOT / ".autotrade_state.json"
+CAPITAL_LEDGER_PATH = ROOT / ".capital_ledger.json"
 AUTOTRADE_AUDIT_PATH = ROOT / "outputs" / "autotrade_audit.jsonl"
 DEFAULT_STRATEGY_SYMBOLS = ["AAPL", "MSFT", "NVDA", "TSLA", "AMD", "AMZN", "META", "GOOGL"]
 BACKTEST_DATASET_FILES = {
@@ -765,6 +767,49 @@ class Handler(BaseHTTPRequestHandler):
                     volume = None
             status = fee_schedule_snapshot(volume)
             body = json.dumps(status).encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+            return
+
+        if parsed.path == "/api/capital/transfers":
+            status = transfers_snapshot(CAPITAL_LEDGER_PATH)
+            body = json.dumps({"ok": True, **status}).encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+            return
+
+        if parsed.path == "/api/capital/transfers/add":
+            params = parse_qs(parsed.query)
+            amount_raw = params.get("amount_usd", [""])[0]
+            try:
+                amount_usd = float(amount_raw)
+            except ValueError:
+                body = json.dumps({"ok": False, "reason": "invalid_amount"}).encode("utf-8")
+                self.send_response(400)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+                return
+
+            direction = params.get("direction", ["deposit"])[0]
+            source = params.get("source", ["crypto_com_app"])[0]
+            note = params.get("note", [""])[0]
+
+            result = add_transfer(
+                CAPITAL_LEDGER_PATH,
+                amount_usd=amount_usd,
+                direction=direction,
+                source=source,
+                note=note,
+            )
+            body = json.dumps({"ok": True, **result}).encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.send_header("Content-Length", str(len(body)))
