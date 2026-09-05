@@ -25,6 +25,7 @@ htmlcov/
 outputs/
 .autotrade_state.json
 .ip_monitor_state.json
+.capital_ledger.json
 
 # IDE/OS files
 .vscode/

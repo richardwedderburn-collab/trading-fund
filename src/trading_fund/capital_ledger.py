@@ -30,31 +30,45 @@ def save_transfers(path: Path, transfers: List[Dict[str, Any]]) -> None:
 
 
 def summarize(transfers: List[Dict[str, Any]]) -> Dict[str, Any]:
-    total_deposits = sum(float(t.get("amount_usd", 0.0)) for t in transfers if t.get("direction") == "deposit")
-    total_withdrawals = sum(float(t.get("amount_usd", 0.0)) for t in transfers if t.get("direction") == "withdrawal")
+    by_currency: Dict[str, Dict[str, float]] = {}
+    for entry in transfers:
+        currency = str(entry.get("currency") or "USD").upper()
+        bucket = by_currency.setdefault(currency, {"total_deposits": 0.0, "total_withdrawals": 0.0})
+        amount = float(entry.get("amount", 0.0))
+        if entry.get("direction") == "withdrawal":
+            bucket["total_withdrawals"] += amount
+        else:
+            bucket["total_deposits"] += amount
+
+    for currency, bucket in by_currency.items():
+        bucket["total_deposits"] = round(bucket["total_deposits"], 2)
+        bucket["total_withdrawals"] = round(bucket["total_withdrawals"], 2)
+        bucket["net_contributed"] = round(bucket["total_deposits"] - bucket["total_withdrawals"], 2)
+
     return {
         "transfer_count": len(transfers),
-        "total_deposits_usd": round(total_deposits, 2),
-        "total_withdrawals_usd": round(total_withdrawals, 2),
-        "net_contributed_usd": round(total_deposits - total_withdrawals, 2),
+        "by_currency": by_currency,
     }
 
 
 def add_transfer(
     path: Path,
-    amount_usd: float,
+    amount: float,
+    currency: str = "USD",
     direction: str = "deposit",
     source: str = "crypto_com_app",
     note: str = "",
 ) -> Dict[str, Any]:
     direction = direction if direction in VALID_DIRECTIONS else "deposit"
     source = source if source in VALID_SOURCES else "other"
-    amount = max(0.0, float(amount_usd or 0))
+    amount = round(max(0.0, float(amount or 0)), 2)
+    currency = str(currency or "USD").upper()
 
     transfers = load_transfers(path)
     entry = {
         "id": len(transfers) + 1,
-        "amount_usd": amount,
+        "amount": amount,
+        "currency": currency,
         "direction": direction,
         "source": source,
         "note": str(note or ""),

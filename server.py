@@ -786,9 +786,9 @@ class Handler(BaseHTTPRequestHandler):
 
         if parsed.path == "/api/capital/transfers/add":
             params = parse_qs(parsed.query)
-            amount_raw = params.get("amount_usd", [""])[0]
+            amount_raw = params.get("amount", [""])[0]
             try:
-                amount_usd = float(amount_raw)
+                amount = float(amount_raw)
             except ValueError:
                 body = json.dumps({"ok": False, "reason": "invalid_amount"}).encode("utf-8")
                 self.send_response(400)
@@ -798,13 +798,15 @@ class Handler(BaseHTTPRequestHandler):
                 self.wfile.write(body)
                 return
 
+            currency = params.get("currency", ["USD"])[0]
             direction = params.get("direction", ["deposit"])[0]
             source = params.get("source", ["crypto_com_app"])[0]
             note = params.get("note", [""])[0]
 
             result = add_transfer(
                 CAPITAL_LEDGER_PATH,
-                amount_usd=amount_usd,
+                amount=amount,
+                currency=currency,
                 direction=direction,
                 source=source,
                 note=note,
